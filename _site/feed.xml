@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-06-09T11:54:10+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Learn Reinforcement Learning The fun way</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</subtitle><author><name>Reinforcement Learning Playgrounds</name></author><entry><title type="html">K-Arm Bandits</title><link href="http://localhost:4000/reinforcement/learning/Bandits.html" rel="alternate" type="text/html" title="K-Arm Bandits" /><published>2020-07-24T00:00:00+05:30</published><updated>2020-07-24T00:00:00+05:30</updated><id>http://localhost:4000/reinforcement/learning/Bandits</id><content type="html" xml:base="http://localhost:4000/reinforcement/learning/Bandits.html">&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Nonassociative setting&lt;/strong&gt;: one that does not involve learning to act in more than one situation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{\infty}&lt;/script&gt;
+
+&lt;h2 id=&quot;k-armed-bandit-problem&quot;&gt;K-armed Bandit Problem&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In K-armed Bandit Problem, You are faced repeatedly with a choice among K-options, or actions. After each choice, you receive a numerical reward chosen from a stationary probability distribution that depends on the action you selected. your objective is to maximize the expected total reward over some time, for example, over 1000 action selections, or time steps.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Value&lt;/strong&gt; of that action is the expected reward given that that action is selected&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;q_{*}(a) \doteq \mathbb{E}\left[R_{t} | A_{t}=a\right]&lt;/script&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In practice, since we don’t know that exact action value we tend to use the estimated value of action ‘a’ at timestep t as &lt;script type=&quot;math/tex&quot;&gt;Q_t(a)&lt;/script&gt;. And one of our goals is to be as close to &lt;script type=&quot;math/tex&quot;&gt;q*(a)&lt;/script&gt; as possible….&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Although the agent that only exploit by choosing greedily might perform better than the agent who explores in the initial few steps, it turns out that in the long run, the one who explores performs better because it was able to assess the action that might prove to be much better in the long run whereas the greedy method often gets stuck performing the suboptimal actions… so it’s almost always better to explore.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;action-value-methods&quot;&gt;Action-value Methods&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The methods for estimating the values of actions for using the estimates to make action selection decisions are collectively known as &lt;strong&gt;action-value methods&lt;/strong&gt;…&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The simplest way of estimating the action values is to just take the sample average:&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;Q_{t}(a) \doteq \frac{\text { sum of rewards when } a \text { taken prior to } t}{\text { number of times } a \text { taken prior to } t}=\frac{\sum_{i=1}^{t-1} R_{i} \cdot \mathbb{1}_{A_{i}=a}}{\sum_{i=1}^{t-1} \mathbb{1}_{A_{i}=a}}&lt;/script&gt;
+
+    &lt;p&gt;Plus, the simplest method of selecting the action is to always act greedily i.e:&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;A_t = \operatorname{argmax}_{a} Q_t(a)&lt;/script&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;10-arm-test-bed&quot;&gt;10-arm Test Bed&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;A better way of action selection would be to behave greedily most of the time, but every once in a while (with a small probability &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;, instead select randomly which is the exact reasoning behind the &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;-greedy algorithm…&lt;/p&gt;
+
+    &lt;p&gt;The advantage of this method is that in the limit, the action value converges to q*(a) for each action because until then it’s been visited infinite amount of time&lt;/p&gt;
+
+    &lt;p&gt;This also means that the probability of selecting the optimal action converges to greater than &lt;script type=&quot;math/tex&quot;&gt;1-\epsilon&lt;/script&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If the reward variance is zero, then the greedy method would know the true value of each action after trying it once. In this case, the greedy method might actually perform best but even in the deterministic case there is still a large advantage to explore because there could be the case where the action value is deterministic but the environment is non-stationary which means it is possible that one of the non-optimal action become optimal over time…&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;So, our original formulation is not suited for incremental learning that we have in the RL setting but with slight modification (see derivation 2.3) we can create our first simple bandit algorithm:-&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;/assets/img/posts_imgs/bandits/body/banditAlgo.png&quot; width=&quot;80%&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;tracking-a-nonstationary-problem&quot;&gt;Tracking a Nonstationary Problem&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;In non-stationary problem it always makes much more sense to give more weightage to the more-recent rewards rather than initial ones which leads to our second method for estimating action values:-&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+  Q_{n+1} &amp;=Q_{n}+\alpha\left[R_{n}-Q_{n}\right] \\
+  &amp;=\alpha R_{n}+(1-\alpha) Q_{n} \\
+  &amp;=\alpha R_{n}+(1-\alpha)\left[\alpha R_{n-1}+(1-\alpha) Q_{n-1}\right] \\
+  &amp;=\alpha R_{n}+(1-\alpha) \alpha R_{n-1}+(1-\alpha)^{2} Q_{n-1} \\
+  &amp;=\alpha R_{n}+(1-\alpha) \alpha R_{n-1}+(1-\alpha)^{2} \alpha R_{n-2}+\\
+  &amp; \cdots+(1-\alpha)^{n-1} \alpha R_{1}+(1-\alpha)^{n} Q_{1} \\
+  &amp;=(1-\alpha)^{n} Q_{1}+\sum_{i=1}^{n} \alpha(1-\alpha)^{n-i} R_{i}
+  \end{aligned} %]]&gt;&lt;/script&gt;
+
+    &lt;p&gt;This method is also known as &lt;strong&gt;exponential recency-weighted average&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;According to stochastic approximation theory we an assure convergence of a method if it satisfies these 2 conditions:-&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\sum_{n=1}^{\infty}\alpha_n (a) = \infty \hspace{25pt} \text{and} \hspace{25pt} \sum_{n=1}^{\infty}\alpha^2_n (a) &lt; \infty %]]&gt;&lt;/script&gt;
+
+    &lt;p&gt;The first condition guarantees that the steps are large enough to eventually overcome any initial conditions or random fluctuations.&lt;/p&gt;
+
+    &lt;p&gt;The second condition guarantees that eventually the steps become small enough to assure convergence.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Although the sample average obeys both the conditions but the constant step size parameter doesn’t obey the second one, which means it keeps updating the estimates in response to the most recently received rewards which is desirable in non-stationary cases…&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;optimistic-initial-values&quot;&gt;Optimistic Initial Values&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The optimistic greedy encourages action-value methods to explore because we start with a highly optimistic initial estimate the agent has to explore after getting disappointed by observing the new reward that is always smaller than the initial estimates…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/bandits/body/optimisticGreedy.png&quot; width=&quot;80%&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;upper-confidence-bound-action-selection-ucb&quot;&gt;Upper Confidence Bound Action selection (UCB)&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The idea of &lt;strong&gt;upper confidence bound(UCB) action selection&lt;/strong&gt; is that the square-root term is a measure of the uncertainty or variance in the estimate of &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;’s value. The quantity being maxed over is thus a sort of upper bound on the possible true value of action &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;, with &lt;script type=&quot;math/tex&quot;&gt;c&lt;/script&gt; determining the confidence level. Each time &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; is selected the uncertainty is presumably reduced: &lt;script type=&quot;math/tex&quot;&gt;Nt(a)&lt;/script&gt; increments, and, as it appears in the denominator, the uncertainty term decreases. On the other hand, each time an action other than &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; is selected,&lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; increases but &lt;script type=&quot;math/tex&quot;&gt;Nt(a)&lt;/script&gt; does not, because it appears in the numerator, the uncertainty estimate increases. The use of the natural logarithm means that the increases get smaller over time, but are unbounded; all actions will eventually be selected, but actions with lower value estimates, or that have already been selected frequently, will be selected with decreasing frequency over time.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;A_t = \operatorname{argmax}_{a}{\left [ Q_t(a)  + c \sqrt{\frac{\ln t}{N_t(a)}} \quad \right ]}&lt;/script&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/bandits/body/UCB.png&quot; width=&quot;80%&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;gradient-bandit-algorithms&quot;&gt;Gradient Bandit Algorithms&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;In gradient Bandit Algorithm we consider learning a numerical &lt;strong&gt;preference&lt;/strong&gt; for each action &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;, which we denote &lt;script type=&quot;math/tex&quot;&gt;H_t(a) \in \mathbb{R}&lt;/script&gt;. The larger the preference, the more often that action is taken.&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\operatorname{Pr}\{A_t=a\} = \frac{e^{H_t(a)}}{\sum_{b=1}^{k}e^{H_t(b)}} = \pi_t(a)&lt;/script&gt;
+
+    &lt;p&gt;here, &lt;script type=&quot;math/tex&quot;&gt;\pi_t(a)&lt;/script&gt; is the probability of taking action &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; at time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; also, known as policy ( which we will see in a later chapter)&lt;/p&gt;
+
+    &lt;p&gt;we can naturally learn the action preferences using the stochastic gradient ascent:-&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;H_{t+1}(a) = H_t (a) - \alpha(R_t -\bar{R}_t)\pi_t(a), \hspace{50px} \text{for all } a \neq A_t&lt;/script&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;because we have the reward baseline term &lt;script type=&quot;math/tex&quot;&gt;\bar{R}_t&lt;/script&gt;, even if we shift up the mean of the reward distribution the gradient bandit algorithm will adapt immediately unlike standard bandit algorithm.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;if we let the actions of our bandits affect only the immediate reward then the resulting task becomes an &lt;strong&gt;associative search task&lt;/strong&gt; (contextual bandits) because here, the actions are associated with certain situations and we need to search for the best possible configuration (policy).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;associative-search-contextural-bandits&quot;&gt;Associative Search (Contextural Bandits)&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;contextual bandits are intermediate between k-armed bandit problem and the full RL problem, if the actions are allowed to affect the next situation as well as the reward then we have the full reinforcement learning problem.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Mrityunjay</name></author><category term="ML" /><category term="AI" /><category term="Reinforcement Learning" /><category term="RL" /><category term="Bandits" /><category term="Arm" /><category term="Multi-arm" /><summary type="html">Nonassociative setting: one that does not involve learning to act in more than one situation</summary></entry><entry><title type="html">Dynamic Programming</title><link href="http://localhost:4000/reinforcement/learning/dynProg.html" rel="alternate" type="text/html" title="Dynamic Programming" /><published>2020-07-14T00:00:00+05:30</published><updated>2020-07-14T00:00:00+05:30</updated><id>http://localhost:4000/reinforcement/learning/dynProg</id><content type="html" xml:base="http://localhost:4000/reinforcement/learning/dynProg.html">&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Dynamic programming&lt;/strong&gt; (DP) is a collection of algorithms that can be used to compute optimal policies given a &lt;em&gt;perfect model of the environment&lt;/em&gt; as Markov Decision Process (MDP).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;all of the methods for calculating the optimal policies can be viewed as attempts to achieve much the same effect as DP only with less computation and without the assumption of a perfect model of the environment.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;policy-evaluation-prediction&quot;&gt;Policy Evaluation (Prediction)&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The process of calculating the state-value function &lt;script type=&quot;math/tex&quot;&gt;v_\pi&lt;/script&gt; for an arbitrary policy &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt; is called &lt;strong&gt;policy evaluation&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_\pi(s) = \mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right] = \sum_{a} \pi(a|s) \sum_{s', r}{p(s', r | s, a)}{[ r + \gamma v_\pi (s')]}&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;the existence and uniqueness of &lt;script type=&quot;math/tex&quot;&gt;v_\pi&lt;/script&gt; are guaranteed as long as either &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\gamma &lt; 1 %]]&gt;&lt;/script&gt; or eventual termination is guaranteed from all states under the policy &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The process of iteratively evaluating the value function from the initial approximation, &lt;script type=&quot;math/tex&quot;&gt;v_0&lt;/script&gt; is known as &lt;strong&gt;iterative policy evaluation&lt;/strong&gt; inwhich each successive approximation is obtained by using the bellman equation for &lt;script type=&quot;math/tex&quot;&gt;v_\pi&lt;/script&gt; as an update rule:&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{k+1}(s) =\sum_{a} \pi(a|s) \sum_{s', r}{p(s', r | s, a)}{[ r + \gamma v_k (s')]}&lt;/script&gt;
+
+    &lt;p&gt;In general, the sequence &lt;script type=&quot;math/tex&quot;&gt;v_0,v_1,..,&lt;/script&gt; of approximate value functions converges to &lt;script type=&quot;math/tex&quot;&gt;v_\pi&lt;/script&gt; as &lt;script type=&quot;math/tex&quot;&gt;k \rightarrow \infty&lt;/script&gt;, here, we can think of a &lt;script type=&quot;math/tex&quot;&gt;v_\pi&lt;/script&gt; as some fixed point.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In DP all the updates are called &lt;strong&gt;expected updates&lt;/strong&gt; because they are based on an expectation over all possible next states rather than on a sample next state.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The order in which states have their values updated during the sweep has a &lt;em&gt;significant influence on the rate of convergence&lt;/em&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Full algorithm of iterative policy evaluation&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/dynProg/body/iterativePolicyEvalAlgo.png&quot; width=&quot;800px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;policy-improvement&quot;&gt;Policy Improvement&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The process of making a new policy that improves on an original policy, by making it greedy with respect to the value function of the original policy, is called &lt;strong&gt;policy improvement&lt;/strong&gt;.&lt;/p&gt;
+
+    &lt;p&gt;Suppose the new greedy policy, &lt;script type=&quot;math/tex&quot;&gt;\pi'&lt;/script&gt;  is as good as, but not better than the older policy &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt;. then &lt;script type=&quot;math/tex&quot;&gt;v_\pi = v_\pi'&lt;/script&gt;, and from it follow that for all &lt;script type=&quot;math/tex&quot;&gt;s \in \mathcal{S}&lt;/script&gt;:
+  &lt;script type=&quot;math/tex&quot;&gt;v_{\pi'}(s) =\max_a \sum_{s', r}{p(s', r | s, a)}{[ r + \gamma v_{\pi'} (s')]}&lt;/script&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;one way of assessing whether our current policy can be improved is by considering a setting in which we select a specific action &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; in-state &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt; and thereafter following the existing policy &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt;. now, if we observe an improvement in expected return by selecting the action &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; every time we are in state &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt;  then this new policy would in fact be a better one overall.&lt;/p&gt;
+
+    &lt;p&gt;we can formalize this idea by considering any pair of deterministic policies such that, for all &lt;script type=&quot;math/tex&quot;&gt;s \in \mathcal{S}&lt;/script&gt; in which :&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;q_\pi(s, \pi'(s)) \geq v_\pi(s)&lt;/script&gt;
+
+    &lt;p&gt;then the &lt;strong&gt;policy improvement theorem&lt;/strong&gt; states that the policy &lt;script type=&quot;math/tex&quot;&gt;\pi'&lt;/script&gt; must be as good as, or better than , &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt;. that is it must obtain greater or equal expected return from all states &lt;script type=&quot;math/tex&quot;&gt;s \in \mathcal{S}&lt;/script&gt; i.e, &lt;script type=&quot;math/tex&quot;&gt;v_{\pi'} \geq v_\pi(s)&lt;/script&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;policy-iteration&quot;&gt;Policy Iteration&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;if we combine both the policy evaluation and improvement then we can obtain a sequence of monotonically improving policies and value functions and eventually converge to an optimal policy, this iterative process is known as &lt;strong&gt;policy iteration&lt;/strong&gt;:-&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\pi_{0} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{0}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{1} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{1}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{2} \stackrel{\mathrm{E}}{\longrightarrow} \cdots \stackrel{\mathrm{I}}{\longrightarrow} \pi_{*} \stackrel{\mathrm{E}}{\longrightarrow} v_{*}&lt;/script&gt;
+
+    &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\stackrel{\mathrm{E}}{\longrightarrow}&lt;/script&gt; denotes a policy evaluation and &lt;script type=&quot;math/tex&quot;&gt;\stackrel{\mathrm{I}}{\longrightarrow}&lt;/script&gt; denotes a policy improvement.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Each policy is guaranteed to be a strict improvement over the previous one (unless it is already optimal). Because a finite MDP has only a finite number of policies, this process must converge to an optimal policy and the optimal value function in a finite number of iterations. --&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/dynProg/body/PolicyIterAlgo.png&quot; width=&quot;800px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;value-iteration&quot;&gt;Value Iteration&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;if we stop the policy evaluation loop after just one sweep and combine it with the policy improvement what we endup with, is the &lt;strong&gt;value iteration method&lt;/strong&gt;. it can be written as a simple update operation that combines both the operations stated earlier:-&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+v_{k+1}(s) &amp; \doteq \max _{a} \mathbb{E}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\right) | S_{t}=s, A_{t}=a\right] \\
+&amp;=\max _{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r | s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right]
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/dynProg/body/ValueIterAlgo.png&quot; width=&quot;800px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;asynchronous-dynamic-programming&quot;&gt;Asynchronous Dynamic Programming&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Async algorithms update the values of states &lt;em&gt;in any order whatsoever, using whatever values of other states happen to be available&lt;/em&gt;.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;avoiding sweeps doesn’t mean less computation, it just means that now, because we are not bounded by any specific way of selecting a state to update we can now put more emphasis on those states which leads to the optimal solution and update them more frequently and put less emphasis on regions of the environment which are not that important&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;an extreme case of the above assertion is that we can run an iterative DP algorithm at the same time that an agent is “actually” experiencing the MDP.i.e, we can update those states which we are currently visiting.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;generalized-policy-iteration&quot;&gt;Generalized Policy Iteration&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We use the term generalized policy iteration (GPI) to refer to the general idea of letting policy-evaluation and improvement process interact, independent of the granularity and other details of the 2 processes.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;span&gt;
+        &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/dynProg/body/coordinateAscent.png&quot; width=&quot;300px&quot; /&gt;
+    &lt;/span&gt;
+    &lt;span&gt;
+        &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/dynProg/body/policyIterLoop.png&quot; width=&quot;200px&quot; /&gt;
+    &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;now, if we keep running both the processes then in theory, they stabilize only when a policy has been found that is greedy with respect to its own evaluation function i.e, we can’t improve it further, this implies that the Bellman optimality equation holds and thus that policy and the value function are optimal.&lt;/li&gt;
+  &lt;li&gt;We can also think of these 2 steps as optimizing for 2 different goals but if we combine both. then, the ultimate goal is to reach &lt;script type=&quot;math/tex&quot;&gt;v_*&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\pi_*&lt;/script&gt; that’s where these 2 processes converge eventually.–&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Mrityunjay</name></author><category term="ML" /><category term="AI" /><category term="Reinforcement Learning" /><category term="RL" /><category term="Dynamic Programming" /><category term="GridWorld" /><summary type="html"></summary></entry><entry><title type="html">Monte Carlo</title><link href="http://localhost:4000/reinforcement/learning/monteCarlo.html" rel="alternate" type="text/html" title="Monte Carlo" /><published>2020-07-14T00:00:00+05:30</published><updated>2020-07-14T00:00:00+05:30</updated><id>http://localhost:4000/reinforcement/learning/monteCarlo</id><content type="html" xml:base="http://localhost:4000/reinforcement/learning/monteCarlo.html">&lt;ul&gt;
+  &lt;li&gt;Unlike DPs, Monte Carlo Methods rely solely on the sample sequences of states, actions, and reward obtained from the environment to calculate their value estimates by simply averaging the sample returns for each state-action pair.&lt;/li&gt;
+  &lt;li&gt;MC Methods computes/update there value estimates and policies after the end of each episode.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Advantage of using Monte Carlo Methods:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Doesn’t require complete knowledge of the environment&lt;/li&gt;
+  &lt;li&gt;Takes less memory&lt;/li&gt;
+  &lt;li&gt;Can compute optimal policies.&lt;/li&gt;
+  &lt;li&gt;unlike DPs, the computational expense of estimating the value of a single state is independent of the number of states.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;monte-carlo-prediction&quot;&gt;Monte Carlo Prediction&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;first-visit MC Method&lt;/strong&gt; estimates &lt;script type=&quot;math/tex&quot;&gt;v_\pi(s)&lt;/script&gt; as the average of the returns following first visits to &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt; at each episode.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Every-visit MC Method&lt;/strong&gt; simply averages the returns following all visits to &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;both of them converge to &lt;script type=&quot;math/tex&quot;&gt;v_\pi(s)&lt;/script&gt; as the number of visits (or first visits) to &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt; goes to infinity.&lt;/li&gt;
+  &lt;li&gt;ASIDE: we can verify the convergence in the case of first-visit MC Method by observing that &lt;em&gt;the first-visit MC Method the return is an i.i.d distributed estimate of &lt;script type=&quot;math/tex&quot;&gt;v_\pi(s)&lt;/script&gt; with finite variance&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;the MC-method is preferred over DPs even if we have complete knowledge of our environment because, in DP, all of the probabilities must be computed &lt;em&gt;before&lt;/em&gt; DP can be applied which requires a lot of computation.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;backup-diagram-of-mc-methods&quot;&gt;backup Diagram of MC-methods&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;for MC estimation of &lt;script type=&quot;math/tex&quot;&gt;v_\pi&lt;/script&gt;, the root is a state node, and below it is the entire trajectory of transitions in a particular episode, ending at the terminal state as shown in the fig below&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/backupDiag.png&quot; width=&quot;400px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Monte Carlo methods &lt;em&gt;do not bootstrap&lt;/em&gt;!.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;monte-carlo-estimation-of-action-value&quot;&gt;Monte Carlo Estimation of Action Value&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Without a model of the environment its important to estimate the state-action pairs in order to estimate the policy.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Complication with estimating action-value:- it turns out that it’s hard to accurately estimate the state-action pairs because it can be the case that for some deterministic policy &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt; many state-action pairs may never be visited and hence we can’t average their returns which means we can’t improve our estimates of these action with experience…&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;exploring start&lt;/strong&gt;: we can tackle this issue, by specifying that the episodes start in a state-action pair and that * every pair has a nonzero probability of being selected as the start. * This guarantees that all state-action pairs will be visited an infinite number of times in the limit.&lt;/li&gt;
+  &lt;li&gt;alternatively, we can assure that all state-action pairs are encountered is to consider only policies that are stochastic with a non-zero probability of selecting all actions in each state.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;monte-carlo-control&quot;&gt;Monte Carlo Control&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;By following the same Generalized policy iteration method we can approximate optimal policies.
+    &lt;ul&gt;
+      &lt;li&gt;More precisely, we can perform policy evaluation by experiencing many episodes and approximate action-value function which will eventually lead to true action-value function.&lt;/li&gt;
+      &lt;li&gt;Whereas, the policy improvement is done by making the policy greedy with respect to the current value function and* because we have an action-value function we don’t need any model to construct our greedy policy *:- &lt;script type=&quot;math/tex&quot;&gt;\pi(s) = \operatorname{argmax}_a q(s, a)&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;If we look at the policy improvement theorem we know that we will systematically get better and better policy and eventually, this entire process converges to the optimal policy.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;To assure convergence, we have to make 2 unlikely assumption
+    &lt;ul&gt;
+      &lt;li&gt;one was that the episodes have &lt;strong&gt;exploring starts&lt;/strong&gt;&lt;/li&gt;
+      &lt;li&gt;policy evaluation could be done with an infinite number of episodes.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;we can get rid of the second assumption by simply give up trying to complete the policy evaluation before returning to policy improvement.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;In-place value iteration&lt;/strong&gt;:- here, we take the above idea to extreme i.e, for every state we perform policy evaluation only once and then do policy improvement.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;for Monte-Carlo policy iteration we first generate the episode than after then we perform policy evaluation and the improvement at all the states visited in the episode by using there respective observed returns. (the full algorithm is given below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/MonteCarloESAlgo.png&quot; width=&quot;800px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;monte-carlo-without-exploring-starts&quot;&gt;Monte Carlo without Exploring Starts.&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The only general way to ensure that all actions are selected infinitely often is for the agent to continue to select them.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;there are 2 approaches to ensure the above statement:-
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;On-policy methods&lt;/strong&gt;:- On-policy methods attempt to evaluate or improve the policy that is used to make decisions.&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Off-policy methods&lt;/strong&gt;: This method evaluates or improve a policy different from that used to generate the data.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In on-policy control methods the policy is generally &lt;em&gt;soft&lt;/em&gt; meaning that &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt;(a|s) for all &lt;script type=&quot;math/tex&quot;&gt;s \in S&lt;/script&gt; and all &lt;script type=&quot;math/tex&quot;&gt;a \in \mathcal{A}(s)&lt;/script&gt;, but gradually shifted closer and closer to a deterministic optimal policy.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;since the GPI require only to move the policy towards a greedy policy we can improve our &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;-soft policy &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt; by moving it only to an &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;-greedy policy which is guaranteed to be better than or equal to &lt;script type=&quot;math/tex&quot;&gt;\pi&lt;/script&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/onPolicyFirstVisitMCControlAlgo.png&quot; width=&quot;800px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It’s important to note that in the limit, we only achieve the best policy among the &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;-soft policies, but the advantage of this method is that we have completely eliminated the assumption of exploring starts.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;off-policy-prediction-via-importance-sampling&quot;&gt;Off-Policy Prediction via Importance Sampling&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The On-policy Method learns action values not for the optimal policy, but for a near-optimal policy that still explores.&lt;/li&gt;
+  &lt;li&gt;in Off-Policy Method we use &lt;em&gt;2 policy&lt;/em&gt; instead,
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;target Policy&lt;/strong&gt;: The policy we want to learn&lt;/li&gt;
+      &lt;li&gt;** behavior policy**: the policy used to generate behavior&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;because we have a different policy to generate our behavior we can make our policy such that it never assigns 0 probability to any action.&lt;/li&gt;
+  &lt;li&gt;because we have a different policy to generate our data the off-policy methods are &lt;em&gt;often of greater variance and slower to converge&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;We apply importance sampling to off-policy learning by weighting returns according to the relative probability of their trajectories occurring under the target and behavior policies, called the &lt;strong&gt;importance-sampling ratio&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;To estimate &lt;script type=&quot;math/tex&quot;&gt;v_\pi(s)&lt;/script&gt;, we simply scale the returns by the ratios and average the results.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;V(s) = \frac{\sum_{t \in \mathit{T}(s) {\rho_t : T(t) -1 G_t}}}{|\mathit{T}(s)|}&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When importance sampling is done as a simple average like above, its called &lt;strong&gt;ordinary importance sampling&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;they are generally unbiased&lt;/li&gt;
+      &lt;li&gt;variance of the ratios can be unbounded&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If we use weighted average to estimate our value function then its called &lt;strong&gt;weighted importance sampling&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1}}&lt;/script&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;weighted importance sampling is biased although the bias converges asymptotically to zero.&lt;/li&gt;
+      &lt;li&gt;assuming returns are bounded then the variance of weighted importance sampling estimator converges to zero even if the variance of the ratios themselves is infinite&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;in practice, weighted importance sampling is strongly preferred then ordinary importance sampling.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/importanceSamplingComparison.png&quot; width=&quot;800px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;incremental-implementation-of-monte-carlo-prediction&quot;&gt;Incremental Implementation of Monte Carlo Prediction&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;For implementing on-policy MC prediction we can simply extend the technique described in section 2.4 where instead of averaging the rewards, we average “returns”.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;For Off policy MC prediction with Ordinary Importance Sampling, &lt;em&gt;we simply average the scaled returns&lt;/em&gt; instead of rewards&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In the case of weighted importance sampling we take the weighted average of our returns in order to calculate our value function:-
+instead of averaging the rewards, here, we average “returns”.&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;V_{n} \doteq \frac{\sum_{k=1}^{n-1} W_{k} G_{k}}{\sum_{k=1}^{n-1} W_{k}}, \quad n \geq 2&lt;/script&gt;
+
+    &lt;p&gt;and incrementally update our value function &lt;script type=&quot;math/tex&quot;&gt;V_n&lt;/script&gt; as we obtain &lt;script type=&quot;math/tex&quot;&gt;G_n&lt;/script&gt;. here, we need to maintain the record of &lt;script type=&quot;math/tex&quot;&gt;V_n&lt;/script&gt; as well as of the cumulative sum of the weights &lt;script type=&quot;math/tex&quot;&gt;C_n&lt;/script&gt;. which means our final update rule is:-&lt;/p&gt;
+
+    &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;V_{n+1} \doteq V_{n}+\frac{W_{n}}{C_{n}}\left[G_{n}-V_{n}\right], \quad n \geq 1&lt;/script&gt;
+where, 
+&lt;script type=&quot;math/tex&quot;&gt;C_{n+1} \doteq C_{n}+W_{n+1}&lt;/script&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;We can apply this technique to the on-policy case as well, &lt;em&gt;simply by assuming the behavior and target policies to be equal&lt;/em&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/offPolicyMCPrediction.png&quot; width=&quot;800px&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;off-policy-monte-carlo-control&quot;&gt;Off-policy Monte Carlo Control&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Off-policy MC Control follows the behavior policy while learning about and improving the target policy.&lt;/li&gt;
+  &lt;li&gt;the behavior policy must have a nonzero probability of selecting all actions that might be selected by the target policy i.e, * for convergence, it must be soft*.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&quot;margin: 0 auto; text-align: center&quot;&gt;
+    &lt;img src=&quot;http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/offPolicyMCControl.png&quot; width=&quot;800px&quot; /&gt; 
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;NOTE:&lt;/em&gt; if nongreedy actions are common in the actual policy then learning will be slow! which is the reason why we use alternative methods like TD learning etc.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Mrityunjay</name></author><category term="ML" /><category term="AI" /><category term="Reinforcement Learning" /><category term="RL" /><category term="Monte Carlo" /><category term="BlackJack" /><summary type="html">Unlike DPs, Monte Carlo Methods rely solely on the sample sequences of states, actions, and reward obtained from the environment to calculate their value estimates by simply averaging the sample returns for each state-action pair. MC Methods computes/update there value estimates and policies after the end of each episode.</summary></entry></feed>

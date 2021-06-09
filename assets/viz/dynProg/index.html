@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reinforcement Learning using Dynamic Programming</title>
+
+    <script src="./dependency/tensorflowJS/tf.min.js"></script>
+    <script src="./dependency/d3.js"></script>
+
+    <script src="./dependency/utils.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.15.2/cytoscape.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/shim.min.js"></script>
+    <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+    <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+    <script src="./dependency/cytoscape/cytoscape-bilkent.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+    
+    <script src="./YOGA/Environments/gridWorldDP.js"></script>
+    <script src="./dependency/lodash.js"></script>
+    <script src="./dependency/Utils.js"></script>
+    <script src="Source/policyItr.js"></script>
+
+    <div id="mainContainer">
+        <div id="properties">
+            <!-- <div id="controlsContainer"> -->
+                <div id="controls">
+                    <button id="restart">&#x21ba;</button>
+                    <button id="pausePlay" class="material-icons">pause</button>
+                    <button id="nextStep" class="material-icons md-48">skip_next</button>
+                </div>
+
+                <div>
+                    <h4 id="epochName">Epoch</h4>
+                    <input type="number" id="epoch" min="0" />
+                </div>
+
+                <div>
+                    <h4 id="epsilonName">Epsilon</h4>
+                    <input type="number" id="epsilon" min="0" value="0.0001" />
+                    
+                </div>
+
+                <div>
+                    <h4 id="epsilonName">No-animation (faster)</h4>
+                    <input type="checkbox" id="noAnim" min="0" />
+                </div>
+
+                <div>
+                    <button id="editMode">Edit</button>
+                </div>
+                <div>
+                    <h4 id="gridSizeName">grid Size</h4>
+                    <input type="range" step="1" min="2" max="10" value="5" id="gridSize"style="display: none;" />
+                </div>
+            <!-- </div> -->
+
+        </div>
+        <div id="vizContainer" >
+            <div id="cellCtrl" style="position: absolute"></div>
+            <div id="cy"></div>
+        </div>
+
+    </div>
+    <script src="app.js"></script>
+
+    <script src="graphViz.js"></script>
+</body>
+</html>

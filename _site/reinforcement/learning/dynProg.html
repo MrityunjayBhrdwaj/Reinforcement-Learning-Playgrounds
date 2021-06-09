@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Dynamic Programming - Learn Reinforcement Learning The fun way</title>
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+	<meta name="viewport" content="width=1024">
+
+	<meta property="og:image" content="">
+	<link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicon/apple-touch-icon-114x114.png">
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#311e3e">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#311e3e">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#311e3e">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+</head>
+
+<body>
+  <div class="flex-container">
+  <header class="main-header">
+  <div class="wrapper">
+    <div class="header-flex">
+      <div class="menu-icon-container">
+        <span class="menu-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+      </div>
+      <nav class="main-nav">
+        <span class="menu-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
+        <ul>
+
+          <!-- TODO: BRAINSTORM: decide where to put these blog and about page link... i am thinking of in the footer but i also need to put some link on the header (or do i??) -->
+          <!-- <li><a href="/">Blog</a></li>
+          <li><a href="/about">About</a></li> -->
+
+        
+          
+            <li><a href="/reinforcement/learning/Bandits.html" class="recent-item" ><span>K-Arm Bandits</span></a></li>
+          
+        
+          
+            <li><a href="/reinforcement/learning/monteCarlo.html" class="recent-item" ><span>Monte Carlo</span></a></li>
+          
+        
+          
+            <li><a href="/reinforcement/learning/dynProg.html" class="recent-item" ><span>Dynamic Programming</span></a></li>
+          
+        
+
+        </ul>
+      </nav>
+      <p class="logo"><a href="/">Reinforcement Learning Playgrounds</a></p>
+      <div class="search-icon-container">
+        <span class="search-icon"><a><i class="fa fa-search" aria-hidden="true"></i></a></span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- including plotlyjs -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</header> <!-- End Header -->
+
+
+  <!-- including mathjax -->
+    <script async type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: [
+        "MathMenu.js",
+        "MathZoom.js",
+        "AssistiveMML.js",
+        "a11y/accessibility-menu.js"
+      ],
+      jax: ["input/TeX", "output/CommonHTML"],
+      TeX: {
+        extensions: [
+          "AMSmath.js",
+          "AMSsymbols.js",
+          "noErrors.js",
+          "noUndefined.js",
+        ]
+      }
+    });
+  </script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Import all the required dependencies -->
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- From the web -->
+  
+
+
+  <!-- imported the required visualization script for cover-visualization -->
+  <article class="article-page">
+    <div class="page-image" style='height: 800px'>
+      <embed id="myFrame" style="background-size: cover;padding: 0%;" frameborder=0 class="cover-image" width="90%" align="middle" padding="0" scrolling="no" src='/assets/viz/dynProg/index.html'></embed>
+    </div>
+    <div class="wrapper">
+      <div class="page-content">
+        <div class="header-page">
+          <h1 class="page-title">Dynamic Programming</h1>
+
+
+          <!-- <div class="page-date"><time datetime="2020-07-14 00:00:00 +0530">2020, Jul 14</time></div> -->
+        </div>
+        <p><br /></p>
+
+<ul>
+  <li>
+    <p><strong>Dynamic programming</strong> (DP) is a collection of algorithms that can be used to compute optimal policies given a <em>perfect model of the environment</em> as Markov Decision Process (MDP).</p>
+  </li>
+  <li>
+    <p>all of the methods for calculating the optimal policies can be viewed as attempts to achieve much the same effect as DP only with less computation and without the assumption of a perfect model of the environment.</p>
+  </li>
+</ul>
+
+<h2 id="policy-evaluation-prediction">Policy Evaluation (Prediction)</h2>
+
+<ul>
+  <li>The process of calculating the state-value function <script type="math/tex">v_\pi</script> for an arbitrary policy <script type="math/tex">\pi</script> is called <strong>policy evaluation</strong>.</li>
+</ul>
+
+<script type="math/tex; mode=display">v_\pi(s) = \mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right] = \sum_{a} \pi(a|s) \sum_{s', r}{p(s', r | s, a)}{[ r + \gamma v_\pi (s')]}</script>
+
+<ul>
+  <li>
+    <p>the existence and uniqueness of <script type="math/tex">v_\pi</script> are guaranteed as long as either <script type="math/tex">% <![CDATA[
+\gamma < 1 %]]></script> or eventual termination is guaranteed from all states under the policy <script type="math/tex">\pi</script></p>
+  </li>
+  <li>
+    <p>The process of iteratively evaluating the value function from the initial approximation, <script type="math/tex">v_0</script> is known as <strong>iterative policy evaluation</strong> inwhich each successive approximation is obtained by using the bellman equation for <script type="math/tex">v_\pi</script> as an update rule:</p>
+
+    <script type="math/tex; mode=display">v_{k+1}(s) =\sum_{a} \pi(a|s) \sum_{s', r}{p(s', r | s, a)}{[ r + \gamma v_k (s')]}</script>
+
+    <p>In general, the sequence <script type="math/tex">v_0,v_1,..,</script> of approximate value functions converges to <script type="math/tex">v_\pi</script> as <script type="math/tex">k \rightarrow \infty</script>, here, we can think of a <script type="math/tex">v_\pi</script> as some fixed point.</p>
+  </li>
+  <li>
+    <p>In DP all the updates are called <strong>expected updates</strong> because they are based on an expectation over all possible next states rather than on a sample next state.</p>
+  </li>
+  <li>
+    <p>The order in which states have their values updated during the sweep has a <em>significant influence on the rate of convergence</em>.</p>
+  </li>
+  <li>
+    <p>Full algorithm of iterative policy evaluation</p>
+  </li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/iterativePolicyEvalAlgo.png" width="800px" />
+</div>
+
+<h2 id="policy-improvement">Policy Improvement</h2>
+
+<ul>
+  <li>
+    <p>The process of making a new policy that improves on an original policy, by making it greedy with respect to the value function of the original policy, is called <strong>policy improvement</strong>.</p>
+
+    <p>Suppose the new greedy policy, <script type="math/tex">\pi'</script>  is as good as, but not better than the older policy <script type="math/tex">\pi</script>. then <script type="math/tex">v_\pi = v_\pi'</script>, and from it follow that for all <script type="math/tex">s \in \mathcal{S}</script>:
+  <script type="math/tex">v_{\pi'}(s) =\max_a \sum_{s', r}{p(s', r | s, a)}{[ r + \gamma v_{\pi'} (s')]}</script></p>
+  </li>
+  <li>
+    <p>one way of assessing whether our current policy can be improved is by considering a setting in which we select a specific action <script type="math/tex">a</script> in-state <script type="math/tex">s</script> and thereafter following the existing policy <script type="math/tex">\pi</script>. now, if we observe an improvement in expected return by selecting the action <script type="math/tex">a</script> every time we are in state <script type="math/tex">s</script>  then this new policy would in fact be a better one overall.</p>
+
+    <p>we can formalize this idea by considering any pair of deterministic policies such that, for all <script type="math/tex">s \in \mathcal{S}</script> in which :</p>
+
+    <script type="math/tex; mode=display">q_\pi(s, \pi'(s)) \geq v_\pi(s)</script>
+
+    <p>then the <strong>policy improvement theorem</strong> states that the policy <script type="math/tex">\pi'</script> must be as good as, or better than , <script type="math/tex">\pi</script>. that is it must obtain greater or equal expected return from all states <script type="math/tex">s \in \mathcal{S}</script> i.e, <script type="math/tex">v_{\pi'} \geq v_\pi(s)</script>.</p>
+  </li>
+</ul>
+
+<h2 id="policy-iteration">Policy Iteration</h2>
+
+<ul>
+  <li>
+    <p>if we combine both the policy evaluation and improvement then we can obtain a sequence of monotonically improving policies and value functions and eventually converge to an optimal policy, this iterative process is known as <strong>policy iteration</strong>:-</p>
+
+    <script type="math/tex; mode=display">\pi_{0} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{0}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{1} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{1}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{2} \stackrel{\mathrm{E}}{\longrightarrow} \cdots \stackrel{\mathrm{I}}{\longrightarrow} \pi_{*} \stackrel{\mathrm{E}}{\longrightarrow} v_{*}</script>
+
+    <p>where <script type="math/tex">\stackrel{\mathrm{E}}{\longrightarrow}</script> denotes a policy evaluation and <script type="math/tex">\stackrel{\mathrm{I}}{\longrightarrow}</script> denotes a policy improvement.</p>
+  </li>
+</ul>
+
+<!-- Each policy is guaranteed to be a strict improvement over the previous one (unless it is already optimal). Because a finite MDP has only a finite number of policies, this process must converge to an optimal policy and the optimal value function in a finite number of iterations. -->
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/PolicyIterAlgo.png" width="800px" />
+</div>
+
+<h2 id="value-iteration">Value Iteration</h2>
+
+<ul>
+  <li>if we stop the policy evaluation loop after just one sweep and combine it with the policy improvement what we endup with, is the <strong>value iteration method</strong>. it can be written as a simple update operation that combines both the operations stated earlier:-</li>
+</ul>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+v_{k+1}(s) & \doteq \max _{a} \mathbb{E}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\right) | S_{t}=s, A_{t}=a\right] \\
+&=\max _{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r | s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right]
+\end{aligned} %]]></script>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/ValueIterAlgo.png" width="800px" />
+</div>
+
+<h2 id="asynchronous-dynamic-programming">Asynchronous Dynamic Programming</h2>
+
+<ul>
+  <li>
+    <p>Async algorithms update the values of states <em>in any order whatsoever, using whatever values of other states happen to be available</em>.</p>
+
+    <ul>
+      <li>avoiding sweeps doesn’t mean less computation, it just means that now, because we are not bounded by any specific way of selecting a state to update we can now put more emphasis on those states which leads to the optimal solution and update them more frequently and put less emphasis on regions of the environment which are not that important</li>
+      <li>
+        <p>an extreme case of the above assertion is that we can run an iterative DP algorithm at the same time that an agent is “actually” experiencing the MDP.i.e, we can update those states which we are currently visiting.</p>
+      </li>
+      <li></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="generalized-policy-iteration">Generalized Policy Iteration</h2>
+
+<ul>
+  <li>We use the term generalized policy iteration (GPI) to refer to the general idea of letting policy-evaluation and improvement process interact, independent of the granularity and other details of the 2 processes.</li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <span>
+        <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/coordinateAscent.png" width="300px" />
+    </span>
+    <span>
+        <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/policyIterLoop.png" width="200px" />
+    </span>
+</div>
+
+<ul>
+  <li>now, if we keep running both the processes then in theory, they stabilize only when a policy has been found that is greedy with respect to its own evaluation function i.e, we can’t improve it further, this implies that the Bellman optimality equation holds and thus that policy and the value function are optimal.</li>
+  <li>We can also think of these 2 steps as optimizing for 2 different goals but if we combine both. then, the ultimate goal is to reach <script type="math/tex">v_*</script> and <script type="math/tex">\pi_*</script> that’s where these 2 processes converge eventually.–</li>
+</ul>
+
+        <div class="page-footer">
+          <div class="page-tag">
+            <span>Tags:</span>
+            
+            <a href="/tags#ML" class="tag">| ML</a>
+            
+            <a href="/tags#AI" class="tag">| AI</a>
+            
+            <a href="/tags#Reinforcement Learning" class="tag">| Reinforcement Learning</a>
+            
+            <a href="/tags#RL" class="tag">| RL</a>
+            
+            <a href="/tags#Dynamic Programming" class="tag">| Dynamic Programming</a>
+            
+            <a href="/tags#GridWorld" class="tag">| GridWorld</a>
+            
+          </div><!-- End Tags -->
+          <div class="page-share">
+            <span>Share:</span>
+            <a href="https://twitter.com/intent/tweet?text=Dynamic Programming&url=http://localhost:4000/reinforcement/learning/dynProg.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a href="https://facebook.com/sharer.php?u=http://localhost:4000/reinforcement/learning/dynProg.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+            <a href="https://plus.google.com/share?url=http://localhost:4000/reinforcement/learning/dynProg.html" title="Share on Google+" rel="nofollow" target="_blank"><i class="fa fa-google" aria-hidden="true"></i></a>
+          </div><!-- End Share -->
+        </div>
+        <!-- Removed disqus, newsletter, recent posts -->
+        <div class="post-nav">
+        <div>
+          
+        </div>
+        <div class="post-nav-next">
+          
+          <a href="/reinforcement/learning/monteCarlo.html">Monte Carlo&nbsp;&raquo;</a>
+          
+        </div>
+      </div>
+
+
+      </div>
+    </div> <!-- End Wrapper -->
+  </article>
+  <div class="search-box">
+  <div class="wrapper">
+    <div class="search-grid">
+      <form class="search-form">
+        <div id="search-container">
+          <input type="text" id="search-input" class="search" placeholder="Search">
+        </div>
+      </form>
+      <ul id="results-container" class="results-search"></ul>
+      <div class="icon-close-container">
+        <span class="search-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <footer class="main-footer">
+  <div class="copyright">
+    <p>2021 &copy; <a href="http://localhost:4000"> Reinforcement Learning Playgrounds </a></p>
+  </div>
+</footer> <!-- End Footer -->
+
+</div>
+
+  <!-- JS -->
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script src="/assets/js/jekyll-search.js"></script>
+<script>
+  SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('results-container'),
+    json: '/search.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    fuzzy: false,
+    exclude: ['Welcome']
+  });
+</script>
+<script src="/assets/js/main.js"></script>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script> <!-- End Analytics -->
+
+</body>
+</html>

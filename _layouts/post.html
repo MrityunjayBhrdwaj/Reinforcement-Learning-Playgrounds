@@ -1,0 +1,115 @@
+---
+layout: default
+---
+<div class="flex-container">
+  {% include header.html %}
+
+  <!-- including mathjax -->
+    <script async type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: [
+        "MathMenu.js",
+        "MathZoom.js",
+        "AssistiveMML.js",
+        "a11y/accessibility-menu.js"
+      ],
+      jax: ["input/TeX", "output/CommonHTML"],
+      TeX: {
+        extensions: [
+          "AMSmath.js",
+          "AMSsymbols.js",
+          "noErrors.js",
+          "noUndefined.js",
+        ]
+      }
+    });
+  </script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Import all the required dependencies -->
+  {% if page.dependency contains "d3" %}
+    <script type="text/javascript" src="{{site.baseurl}}/assets/js/dependency/d3.js"></script>
+  {% endif %}
+
+  {% if page.dependency contains "p5" %}
+    <script type="text/javascript" src="{{site.baseurl}}/assets/js/dependency/p5/p5.min.js"></script>
+  {% endif %}
+
+  {% if page.dependency contains "plotly" %}
+    <script type="text/javascript" src="{{site.baseurl}}/assets/js/dependency/plotlyJS/plotly-latest.min.js"></script>
+  {% endif %}
+
+  {% if page.dependency contains "tensorflow" %}
+    <script type="text/javascript" src="{{site.baseurl}}/assets/js/dependency/tensorflowJS/tf.min.js"></script>
+  {% endif %}
+
+  {% if page.dependency contains "nd" %}
+    <script type="text/javascript" src="{{site.baseurl}}/assets/js/dependency/ndjs/nd.min.js"></script>
+  {% endif %}
+
+  {% if page.dependency contains "lodash" %}
+    <script type="text/javascript" src="{{site.baseurl}}/assets/js/dependency/lodash.js"></script>
+  {% endif %}
+
+  {% if page.dependency contains "utils" %}
+    <script type="text/javascript" src="{{site.baseurl}}/assets/js/dependency/utils.js"></script>
+  {% endif %}
+
+  <!-- From the web -->
+  {% if page.dependency contains "chart" %}
+    <script src="https://npmcdn.com/chart.js@latest/dist/Chart.bundle.min.js"></script>
+
+  {% endif %}
+
+
+  <!-- imported the required visualization script for cover-visualization -->
+  <article class="article-page">
+    <div class="page-image" style='height: {{page.height}}'>
+      <embed id="myFrame" style="background-size: cover;padding: 0%;" frameborder=0 class="cover-image" width="90%" align="middle" padding="0" scrolling="no" src='{{"/assets/viz/" | prepend: site.baseurl | append : page.viz}}'></embed>
+    </div>
+    <div class="wrapper">
+      <div class="page-content">
+        <div class="header-page">
+          <h1 class="page-title">{{page.title}}</h1>
+
+
+          <!-- <div class="page-date"><time datetime="{{page.date}}">{{page.date | date: '%Y, %b %d'}}</time></div> -->
+        </div>
+        {{page.content | markdownify}}
+        <div class="page-footer">
+          <div class="page-tag">
+            <span>Tags:</span>
+            {% for tag in page.tags %}
+            <a href="{{site.baseurl}}/tags#{{tag}}" class="tag">| {{ tag }}</a>
+            {% endfor %}
+          </div><!-- End Tags -->
+          <div class="page-share">
+            <span>Share:</span>
+            <a href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a href="https://facebook.com/sharer.php?u={{ site.url }}{{ page.url }}" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+            <a href="https://plus.google.com/share?url={{ site.url }}{{ page.url }}" title="Share on Google+" rel="nofollow" target="_blank"><i class="fa fa-google" aria-hidden="true"></i></a>
+          </div><!-- End Share -->
+        </div>
+        <!-- Removed disqus, newsletter, recent posts -->
+        <div class="post-nav">
+        <div>
+          {% if page.previous.url %}
+          <a href="{{page.previous.url}}">&laquo;&nbsp;{{page.previous.title}}</a>
+          {% endif %}
+        </div>
+        <div class="post-nav-next">
+          {% if page.next.url %}
+          <a href="{{page.next.url}}">{{page.next.title}}&nbsp;&raquo;</a>
+          {% endif %}
+        </div>
+      </div>
+
+
+      </div>
+    </div> <!-- End Wrapper -->
+  </article>
+  {% include search.html %}
+  {% include footer.html %}
+</div>

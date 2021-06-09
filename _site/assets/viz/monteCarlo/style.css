@@ -1,0 +1,174 @@
+#mainContainer{
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	/* max-width: 62%; */
+	background-color: #eee;
+
+}
+
+#BJ{
+	display: flex;
+	max-width: max-content;
+	margin: 0 auto;
+}
+
+#BJ div{
+	padding: 10px;
+}
+
+      #blackjackArea {
+        margin: 0 auto;
+      }
+
+      #blackjackArea svg{
+        margin: 0 auto;
+		display: block;
+		border-radius: .2em;
+      }
+
+      .card{
+         box-shadow: 50px 10px;
+      }
+
+
+      #playerAction span{
+        padding: 5px;
+      }
+
+      #playerAction {
+        width: max-content;
+        margin: 0 auto;
+        display: flex;
+      }
+
+      #gameStatus {
+        background: aquamarine;
+        border: 5px solid;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: ease;
+        opacity: .0;
+        margin: 0 auto;
+        width: max-content;
+        display: block;
+        margin-top: -200px;
+      }
+
+
+#episodeLog{
+	/* background-color: #eee; */
+	/* overflow-y: scroll; */
+
+	/* height: 65%; */
+	border-top: 5px solid black;
+	/* border-radius: 1em; */
+}
+
+#episodeLogList {
+	padding: 0.5em 0;
+	margin: 0 .2em;
+	border-block-style: solid #eee;
+	height: 170px;
+	overflow-y: auto;
+	/* border-left: 5px solid black; */
+
+}
+
+#episodeLogList li{
+	margin: 0.4em;
+	padding: 0.1em 0;
+	border-bottom: .1em solid #ddd;
+
+}
+
+#score {
+	font-size: larger;
+	font-weight: bolder;
+}
+
+#score div{
+	padding: 0px;
+	width: max-content;
+	margin-top: .05em;
+	/* background-color: red; */
+}
+
+#controls {
+	display: flex;
+	margin: auto 0;
+}
+#controls button{
+	/* background: transparent; */
+	border: 0px;
+	font-size: 1.5em;
+	text-align: center;
+	/* width: 50%; */
+}
+#pausePlay{
+
+	border-radius: 100px;
+	width: 50px;
+	height: 50px;
+	border: 0px;
+	background: #0e2851;
+	color: white;
+}
+#nextStep {
+
+	background: transparent;
+}
+
+#restart {
+
+	background: transparent;
+}
+
+#valueFnContainer {
+	margin: 0 auto;
+	width: 100%;
+	padding: 2em; 
+	
+}
+
+#valueFnViz {
+	display: flex; 
+	text-align: center; 
+	margin: 0 auto;
+
+}
+
+#valueFnViz div{
+	margin: 0 .1em;
+}
+
+body{
+	font-family: 'Courier New', Courier, monospace;
+	margin: 0px;
+	overflow: hidden;
+}
+
+#properties div{
+	padding: 0.5em 1.5em;
+}
+
+#controlsContainer{
+	display: flex;
+	text-align: center; 
+	margin: 0 auto;
+	width: max-content;
+}
+
+
+#properties {
+	/* font-family: 'Material Icons'; */
+	height: 90px;
+	box-shadow: 0px 2px 2px gray;
+	z-index: 1;
+	background-color: white;
+	padding: 0.2em 1em;
+}
+
+#properties h4{
+	margin: 0;
+}

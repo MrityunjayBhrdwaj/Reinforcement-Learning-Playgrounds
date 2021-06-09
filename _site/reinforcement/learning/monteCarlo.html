@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Monte Carlo - Learn Reinforcement Learning The fun way</title>
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+	<meta name="viewport" content="width=1024">
+
+	<meta property="og:image" content="">
+	<link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicon/apple-touch-icon-114x114.png">
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#311e3e">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#311e3e">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#311e3e">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+</head>
+
+<body>
+  <div class="flex-container">
+  <header class="main-header">
+  <div class="wrapper">
+    <div class="header-flex">
+      <div class="menu-icon-container">
+        <span class="menu-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+      </div>
+      <nav class="main-nav">
+        <span class="menu-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
+        <ul>
+
+          <!-- TODO: BRAINSTORM: decide where to put these blog and about page link... i am thinking of in the footer but i also need to put some link on the header (or do i??) -->
+          <!-- <li><a href="/">Blog</a></li>
+          <li><a href="/about">About</a></li> -->
+
+        
+          
+            <li><a href="/reinforcement/learning/Bandits.html" class="recent-item" ><span>K-Arm Bandits</span></a></li>
+          
+        
+          
+            <li><a href="/reinforcement/learning/monteCarlo.html" class="recent-item" ><span>Monte Carlo</span></a></li>
+          
+        
+          
+            <li><a href="/reinforcement/learning/dynProg.html" class="recent-item" ><span>Dynamic Programming</span></a></li>
+          
+        
+
+        </ul>
+      </nav>
+      <p class="logo"><a href="/">Reinforcement Learning Playgrounds</a></p>
+      <div class="search-icon-container">
+        <span class="search-icon"><a><i class="fa fa-search" aria-hidden="true"></i></a></span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- including plotlyjs -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</header> <!-- End Header -->
+
+
+  <!-- including mathjax -->
+    <script async type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: [
+        "MathMenu.js",
+        "MathZoom.js",
+        "AssistiveMML.js",
+        "a11y/accessibility-menu.js"
+      ],
+      jax: ["input/TeX", "output/CommonHTML"],
+      TeX: {
+        extensions: [
+          "AMSmath.js",
+          "AMSsymbols.js",
+          "noErrors.js",
+          "noUndefined.js",
+        ]
+      }
+    });
+  </script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <!-- Import all the required dependencies -->
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- From the web -->
+  
+
+
+  <!-- imported the required visualization script for cover-visualization -->
+  <article class="article-page">
+    <div class="page-image" style='height: 500px'>
+      <embed id="myFrame" style="background-size: cover;padding: 0%;" frameborder=0 class="cover-image" width="90%" align="middle" padding="0" scrolling="no" src='/assets/viz/monteCarlo/index.html'></embed>
+    </div>
+    <div class="wrapper">
+      <div class="page-content">
+        <div class="header-page">
+          <h1 class="page-title">Monte Carlo</h1>
+
+
+          <!-- <div class="page-date"><time datetime="2020-07-14 00:00:00 +0530">2020, Jul 14</time></div> -->
+        </div>
+        <ul>
+  <li>Unlike DPs, Monte Carlo Methods rely solely on the sample sequences of states, actions, and reward obtained from the environment to calculate their value estimates by simply averaging the sample returns for each state-action pair.</li>
+  <li>MC Methods computes/update there value estimates and policies after the end of each episode.</li>
+</ul>
+
+<p>Advantage of using Monte Carlo Methods:</p>
+<ul>
+  <li>Doesn’t require complete knowledge of the environment</li>
+  <li>Takes less memory</li>
+  <li>Can compute optimal policies.</li>
+  <li>unlike DPs, the computational expense of estimating the value of a single state is independent of the number of states.</li>
+</ul>
+
+<h2 id="monte-carlo-prediction">Monte Carlo Prediction</h2>
+
+<ul>
+  <li><strong>first-visit MC Method</strong> estimates <script type="math/tex">v_\pi(s)</script> as the average of the returns following first visits to <script type="math/tex">s</script> at each episode.</li>
+  <li><strong>Every-visit MC Method</strong> simply averages the returns following all visits to <script type="math/tex">s</script>.</li>
+  <li>both of them converge to <script type="math/tex">v_\pi(s)</script> as the number of visits (or first visits) to <script type="math/tex">s</script> goes to infinity.</li>
+  <li>ASIDE: we can verify the convergence in the case of first-visit MC Method by observing that <em>the first-visit MC Method the return is an i.i.d distributed estimate of <script type="math/tex">v_\pi(s)</script> with finite variance</em>.</li>
+  <li>the MC-method is preferred over DPs even if we have complete knowledge of our environment because, in DP, all of the probabilities must be computed <em>before</em> DP can be applied which requires a lot of computation.</li>
+</ul>
+
+<h3 id="backup-diagram-of-mc-methods">backup Diagram of MC-methods</h3>
+<ul>
+  <li>for MC estimation of <script type="math/tex">v_\pi</script>, the root is a state node, and below it is the entire trajectory of transitions in a particular episode, ending at the terminal state as shown in the fig below</li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/backupDiag.png" width="400px" />
+</div>
+
+<ul>
+  <li>Monte Carlo methods <em>do not bootstrap</em>!.</li>
+</ul>
+
+<h2 id="monte-carlo-estimation-of-action-value">Monte Carlo Estimation of Action Value</h2>
+
+<blockquote>
+  <p>Without a model of the environment its important to estimate the state-action pairs in order to estimate the policy.</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>Complication with estimating action-value:- it turns out that it’s hard to accurately estimate the state-action pairs because it can be the case that for some deterministic policy <script type="math/tex">\pi</script> many state-action pairs may never be visited and hence we can’t average their returns which means we can’t improve our estimates of these action with experience…</p>
+  </li>
+  <li><strong>exploring start</strong>: we can tackle this issue, by specifying that the episodes start in a state-action pair and that * every pair has a nonzero probability of being selected as the start. * This guarantees that all state-action pairs will be visited an infinite number of times in the limit.</li>
+  <li>alternatively, we can assure that all state-action pairs are encountered is to consider only policies that are stochastic with a non-zero probability of selecting all actions in each state.</li>
+</ul>
+
+<h2 id="monte-carlo-control">Monte Carlo Control</h2>
+
+<ul>
+  <li>By following the same Generalized policy iteration method we can approximate optimal policies.
+    <ul>
+      <li>More precisely, we can perform policy evaluation by experiencing many episodes and approximate action-value function which will eventually lead to true action-value function.</li>
+      <li>Whereas, the policy improvement is done by making the policy greedy with respect to the current value function and* because we have an action-value function we don’t need any model to construct our greedy policy *:- <script type="math/tex">\pi(s) = \operatorname{argmax}_a q(s, a)</script></li>
+      <li>If we look at the policy improvement theorem we know that we will systematically get better and better policy and eventually, this entire process converges to the optimal policy.</li>
+    </ul>
+  </li>
+  <li>To assure convergence, we have to make 2 unlikely assumption
+    <ul>
+      <li>one was that the episodes have <strong>exploring starts</strong></li>
+      <li>policy evaluation could be done with an infinite number of episodes.</li>
+    </ul>
+  </li>
+  <li>we can get rid of the second assumption by simply give up trying to complete the policy evaluation before returning to policy improvement.
+    <ul>
+      <li><strong>In-place value iteration</strong>:- here, we take the above idea to extreme i.e, for every state we perform policy evaluation only once and then do policy improvement.</li>
+    </ul>
+  </li>
+  <li>for Monte-Carlo policy iteration we first generate the episode than after then we perform policy evaluation and the improvement at all the states visited in the episode by using there respective observed returns. (the full algorithm is given below)</li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/MonteCarloESAlgo.png" width="800px" />
+</div>
+
+<h2 id="monte-carlo-without-exploring-starts">Monte Carlo without Exploring Starts.</h2>
+
+<blockquote>
+  <p>The only general way to ensure that all actions are selected infinitely often is for the agent to continue to select them.</p>
+</blockquote>
+
+<ul>
+  <li>there are 2 approaches to ensure the above statement:-
+    <ul>
+      <li><strong>On-policy methods</strong>:- On-policy methods attempt to evaluate or improve the policy that is used to make decisions.</li>
+      <li><strong>Off-policy methods</strong>: This method evaluates or improve a policy different from that used to generate the data.</li>
+    </ul>
+  </li>
+  <li>
+    <p>In on-policy control methods the policy is generally <em>soft</em> meaning that <script type="math/tex">\pi</script>(a|s) for all <script type="math/tex">s \in S</script> and all <script type="math/tex">a \in \mathcal{A}(s)</script>, but gradually shifted closer and closer to a deterministic optimal policy.</p>
+  </li>
+  <li>since the GPI require only to move the policy towards a greedy policy we can improve our <script type="math/tex">\epsilon</script>-soft policy <script type="math/tex">\pi</script> by moving it only to an <script type="math/tex">\epsilon</script>-greedy policy which is guaranteed to be better than or equal to <script type="math/tex">\pi</script>.</li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/onPolicyFirstVisitMCControlAlgo.png" width="800px" />
+</div>
+
+<ul>
+  <li>It’s important to note that in the limit, we only achieve the best policy among the <script type="math/tex">\epsilon</script>-soft policies, but the advantage of this method is that we have completely eliminated the assumption of exploring starts.</li>
+</ul>
+
+<h2 id="off-policy-prediction-via-importance-sampling">Off-Policy Prediction via Importance Sampling</h2>
+
+<ul>
+  <li>The On-policy Method learns action values not for the optimal policy, but for a near-optimal policy that still explores.</li>
+  <li>in Off-Policy Method we use <em>2 policy</em> instead,
+    <ul>
+      <li><strong>target Policy</strong>: The policy we want to learn</li>
+      <li>** behavior policy**: the policy used to generate behavior</li>
+    </ul>
+  </li>
+  <li>because we have a different policy to generate our behavior we can make our policy such that it never assigns 0 probability to any action.</li>
+  <li>because we have a different policy to generate our data the off-policy methods are <em>often of greater variance and slower to converge</em>.</li>
+  <li>We apply importance sampling to off-policy learning by weighting returns according to the relative probability of their trajectories occurring under the target and behavior policies, called the <strong>importance-sampling ratio</strong>.</li>
+  <li>To estimate <script type="math/tex">v_\pi(s)</script>, we simply scale the returns by the ratios and average the results.</li>
+</ul>
+
+<script type="math/tex; mode=display">V(s) = \frac{\sum_{t \in \mathit{T}(s) {\rho_t : T(t) -1 G_t}}}{|\mathit{T}(s)|}</script>
+
+<ul>
+  <li>When importance sampling is done as a simple average like above, its called <strong>ordinary importance sampling</strong>
+    <ul>
+      <li>they are generally unbiased</li>
+      <li>variance of the ratios can be unbounded</li>
+    </ul>
+  </li>
+  <li>
+    <p>If we use weighted average to estimate our value function then its called <strong>weighted importance sampling</strong></p>
+
+    <script type="math/tex; mode=display">V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1}}</script>
+
+    <ul>
+      <li>weighted importance sampling is biased although the bias converges asymptotically to zero.</li>
+      <li>assuming returns are bounded then the variance of weighted importance sampling estimator converges to zero even if the variance of the ratios themselves is infinite</li>
+    </ul>
+  </li>
+  <li>in practice, weighted importance sampling is strongly preferred then ordinary importance sampling.</li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/importanceSamplingComparison.png" width="800px" />
+</div>
+
+<h2 id="incremental-implementation-of-monte-carlo-prediction">Incremental Implementation of Monte Carlo Prediction</h2>
+
+<ul>
+  <li>
+    <p>For implementing on-policy MC prediction we can simply extend the technique described in section 2.4 where instead of averaging the rewards, we average “returns”.</p>
+  </li>
+  <li>For Off policy MC prediction with Ordinary Importance Sampling, <em>we simply average the scaled returns</em> instead of rewards</li>
+  <li>
+    <p>In the case of weighted importance sampling we take the weighted average of our returns in order to calculate our value function:-
+instead of averaging the rewards, here, we average “returns”.</p>
+
+    <script type="math/tex; mode=display">V_{n} \doteq \frac{\sum_{k=1}^{n-1} W_{k} G_{k}}{\sum_{k=1}^{n-1} W_{k}}, \quad n \geq 2</script>
+
+    <p>and incrementally update our value function <script type="math/tex">V_n</script> as we obtain <script type="math/tex">G_n</script>. here, we need to maintain the record of <script type="math/tex">V_n</script> as well as of the cumulative sum of the weights <script type="math/tex">C_n</script>. which means our final update rule is:-</p>
+
+    <p><script type="math/tex">V_{n+1} \doteq V_{n}+\frac{W_{n}}{C_{n}}\left[G_{n}-V_{n}\right], \quad n \geq 1</script>
+where, 
+<script type="math/tex">C_{n+1} \doteq C_{n}+W_{n+1}</script></p>
+  </li>
+  <li>We can apply this technique to the on-policy case as well, <em>simply by assuming the behavior and target policies to be equal</em>.</li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/offPolicyMCPrediction.png" width="800px" />
+</div>
+
+<h2 id="off-policy-monte-carlo-control">Off-policy Monte Carlo Control</h2>
+
+<ul>
+  <li>Off-policy MC Control follows the behavior policy while learning about and improving the target policy.</li>
+  <li>the behavior policy must have a nonzero probability of selecting all actions that might be selected by the target policy i.e, * for convergence, it must be soft*.</li>
+</ul>
+
+<div style="margin: 0 auto; text-align: center">
+    <img src="http://localhost:4000/assets/img/posts_imgs/monteCarlo/body/offPolicyMCControl.png" width="800px" /> 
+</div>
+
+<ul>
+  <li><em>NOTE:</em> if nongreedy actions are common in the actual policy then learning will be slow! which is the reason why we use alternative methods like TD learning etc.</li>
+</ul>
+
+        <div class="page-footer">
+          <div class="page-tag">
+            <span>Tags:</span>
+            
+            <a href="/tags#ML" class="tag">| ML</a>
+            
+            <a href="/tags#AI" class="tag">| AI</a>
+            
+            <a href="/tags#Reinforcement Learning" class="tag">| Reinforcement Learning</a>
+            
+            <a href="/tags#RL" class="tag">| RL</a>
+            
+            <a href="/tags#Monte Carlo" class="tag">| Monte Carlo</a>
+            
+            <a href="/tags#BlackJack" class="tag">| BlackJack</a>
+            
+          </div><!-- End Tags -->
+          <div class="page-share">
+            <span>Share:</span>
+            <a href="https://twitter.com/intent/tweet?text=Monte Carlo&url=http://localhost:4000/reinforcement/learning/monteCarlo.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a href="https://facebook.com/sharer.php?u=http://localhost:4000/reinforcement/learning/monteCarlo.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+            <a href="https://plus.google.com/share?url=http://localhost:4000/reinforcement/learning/monteCarlo.html" title="Share on Google+" rel="nofollow" target="_blank"><i class="fa fa-google" aria-hidden="true"></i></a>
+          </div><!-- End Share -->
+        </div>
+        <!-- Removed disqus, newsletter, recent posts -->
+        <div class="post-nav">
+        <div>
+          
+          <a href="/reinforcement/learning/dynProg.html">&laquo;&nbsp;Dynamic Programming</a>
+          
+        </div>
+        <div class="post-nav-next">
+          
+          <a href="/reinforcement/learning/Bandits.html">K-Arm Bandits&nbsp;&raquo;</a>
+          
+        </div>
+      </div>
+
+
+      </div>
+    </div> <!-- End Wrapper -->
+  </article>
+  <div class="search-box">
+  <div class="wrapper">
+    <div class="search-grid">
+      <form class="search-form">
+        <div id="search-container">
+          <input type="text" id="search-input" class="search" placeholder="Search">
+        </div>
+      </form>
+      <ul id="results-container" class="results-search"></ul>
+      <div class="icon-close-container">
+        <span class="search-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <footer class="main-footer">
+  <div class="copyright">
+    <p>2021 &copy; <a href="http://localhost:4000"> Reinforcement Learning Playgrounds </a></p>
+  </div>
+</footer> <!-- End Footer -->
+
+</div>
+
+  <!-- JS -->
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script src="/assets/js/jekyll-search.js"></script>
+<script>
+  SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('results-container'),
+    json: '/search.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    fuzzy: false,
+    exclude: ['Welcome']
+  });
+</script>
+<script src="/assets/js/main.js"></script>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script> <!-- End Analytics -->
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+[
+  
+    {
+      "title"    : "K-Arm Bandits",
+      "category" : "",
+      "tags"     : "ML, AI, Reinforcement Learning, RL, Bandits, Arm, Multi-arm",
+      "url"      : "/reinforcement/learning/Bandits.html",
+      "date"     : "2020-07-24 00:00:00 +0530"
+    } ,
+  
+    {
+      "title"    : "Monte Carlo",
+      "category" : "",
+      "tags"     : "ML, AI, Reinforcement Learning, RL, Monte Carlo, BlackJack",
+      "url"      : "/reinforcement/learning/monteCarlo.html",
+      "date"     : "2020-07-14 00:00:00 +0530"
+    } ,
+  
+    {
+      "title"    : "Dynamic Programming",
+      "category" : "",
+      "tags"     : "ML, AI, Reinforcement Learning, RL, Dynamic Programming, GridWorld",
+      "url"      : "/reinforcement/learning/dynProg.html",
+      "date"     : "2020-07-14 00:00:00 +0530"
+    } 
+  
+]

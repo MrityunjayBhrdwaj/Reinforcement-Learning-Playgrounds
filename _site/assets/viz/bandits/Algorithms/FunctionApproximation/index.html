@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD learning</title>
+
+    <script src="../../Dependencies/lodash.js"></script>
+    <script src="../../Dependencies/Utils.js"></script>
+
+    <script src="../../Environments/blackJack.js"></script>
+    <script src="./qLearningWithFA.js"></script>
+
+</head>
+<body>
+
+ <script>
+    // environment to test our models on.
+    const env = new BlackJackEnv();
+
+    // testing Sarsa
+    const policy = policyFnFactory("random", env);
+    const modelS = new MonteCarlo(env, {discountFactor: 1.0});
+    modelS.run(1000, policy);
+ </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD learning</title>
+
+    <script src="../../Dependencies/lodash.js"></script>
+    <script src="../../Dependencies/Utils.js"></script>
+
+    <script src="../../Environments/blackJack.js"></script>
+    <script src="./nStepSarsa.js"></script>
+
+</head>
+<body>
+
+ <script>
+    // environment to test our models on.
+    const env = new BlackJackEnv();
+
+    // testing Sarsa
+    const policy = policyFnFactory("random", env);
+    const model = new nStepSarsa(env, {discountFactor: 1.0, learningRate: 0.5});
+    model.run(1000, policy);
+ </script>
+
+    
+</body>
+</html>

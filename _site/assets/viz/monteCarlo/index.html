@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reinforcement Learning using Dynamic Programming</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly.min.js"></script>
+    <!-- <script src="./dependency/plotlyJS/plotly-latest.min.js"></script> -->
+    <script src="./dependency/utils.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Material+Icons" rel="stylesheet" type="text/css">
+
+    <script src="./dependency/d3.js"></script>
+    <script src="./dependency/lodash.js"></script>
+</head>
+<body>
+
+<div id="mainContainer">
+
+<div id="properties">
+  <div id="controlsContainer">
+    <div id="controls">
+      <button id="restart">&#x21ba;</button>
+      <button id="pausePlay" class="material-icons">pause</button>
+      <button id="nextStep" class="material-icons md-48">skip_next</button>
+    </div>
+
+    <div>
+      <h4 id="epochName">Epoch</h4>
+      <input type="number" id="epoch" min="0" value="100" />
+    </div>
+
+    <div>
+      <h4 id="epsilonName">Epsilon</h4>
+      <input type="number" id="epsilon" min="0" />
+    </div>
+
+    <div>
+      <h4 id="epsilonName">No-animation (faster)</h4>
+      <input type="checkbox" id="noAnim" min="0" />
+    </div>
+
+  </div>
+
+</div>
+<div id="BJ">
+  <div id="left-panel">
+
+    <div id="score">
+      <div id="dealerScore"> Dealer Score: 5</div>
+      <div id="playerScore">Player Score: 21</div>
+
+    </div>
+    <div id="episodeLog" style="width: 200px">
+      <h3 style="text-decoration: underline; text-decoration-skip-ink: none; text-align: left;">Episode #<span id="episodeNumber">3</span> Logs</h3>
+      
+      <ul id="episodeLogList">
+      </ul>
+    </div>
+  </div>
+  <div id="vizContainer">
+    <div id="blackjackArea">
+
+    </div>
+  <div id="outputs">
+      <div id="playerAction">
+        <div class="material-icons" >
+        east
+        </div>
+        <div id="hitAction">Hit</div>
+        <div id="standAction">Stand</div>
+      </div>
+      <div id="gameStatus"></div>
+    </div>
+  </div>
+
+  
+</div>
+
+<hr>
+
+  <div id="valueFnContainer">
+    <h2>Plots</h2>
+
+    <p >Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci cupiditate fuga nostrum facere nisi, eius perferendis culpa ullam ducimus nemo sit sint at soluta eos natus sapiente maiores? Tempora, beatae!</p>
+    <div id="valueFnViz" >
+
+      <div id="valueFnNoAceViz" style="width: 500px; height: 500px; "></div>
+      <div id="valueFnAceViz" style="width: 500px; height: 500px; "></div>
+
+    </div>
+  </div>
+
+  
+  <div id="codeContainer">
+
+  </div>
+
+</div>
+
+    <script src="./dependency/lodash.js"></script>
+    <script src="./dependency/utils.js"></script>
+    <script src="./dependency/Utils.js"></script>
+    <script src="./YOGA/Environments/blackJackGym.js"></script>
+
+    <script src="Source/monteCarloAlgo.js"></script>
+    <script src="Source/mcViz.js"></script>
+
+</body>
+</html>
