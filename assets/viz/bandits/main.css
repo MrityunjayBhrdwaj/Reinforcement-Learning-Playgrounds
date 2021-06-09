@@ -1,0 +1,255 @@
+@import url('/assets/css/main.css');
+
+body{
+    background-color: var(--tertiary-bg-color);
+    color: white;
+    fill: white;
+}
+
+.container {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.slotMachine .slot{
+  height:45px;
+  background-position-x: 55%;
+  background-repeat:round;
+}
+
+.slot1 {
+  background-image: url("./Source/jQuery-SlotMachine-master/img/slot1.png");
+}
+
+.slot2 {
+  background-image: url("./Source/jQuery-SlotMachine-master/img/slot2.png");
+}
+
+.slot3 {
+  background-image: url("./Source/jQuery-SlotMachine-master/img/slot3.png");
+}
+
+.slot4 {
+  background-image: url("./Source/jQuery-SlotMachine-master/img/slot4.png");
+}
+
+.slot5 {
+  background-image: url("./Source/jQuery-SlotMachine-master/img/slot5.png");
+}
+
+.slot6 {
+  background-image: url("./Source/jQuery-SlotMachine-master/img/slot6.png");
+}
+
+/*
+ * Casino
+ */
+#casino {
+    width: 300px
+}
+
+
+
+#casino .content > div {
+  padding-top: 5px;
+  width: 150px;
+  margin: 0 auto;
+  transform: translate(15px, 70px);
+  text-align: center;
+}
+
+.machineContainer{
+  padding: 5px 1px 5px 1px;
+  height: 135px;
+}
+
+.slotMachine{
+  width: 36.333333%;
+  border: 5px solid #CF5178;
+  height: 60px;
+  display: inline-block;
+}
+
+#casino .btn-group {
+  margin-top: 100px;
+  transform: translate(-35px, -35px);
+}
+
+#casino .btn-group .btn {
+  border: none;
+  background-color: rgb(209, 79, 119);
+}
+
+#casino .btn-group .btn:hover, .btn-group .btn:focus {
+  background-color: rgb(180, 75, 119);
+}
+
+#slotMachineTitle {
+  color: white;
+  transform: translate(47px,55px);
+  background-color: red;
+  font-size: 20px;
+  width: 170px;
+  align-content: center;
+  text-align: center;
+  font-weight: bold;
+  z-index: 5;
+  border-radius: 5px;
+  border: 5px solid black;
+  padding: 2px;
+}
+
+.tint {
+  z-index: 1;
+height: 100%;
+width: 100%;
+position: absolute;
+top: 0px;
+left: 0px;
+background: rgba(0, 0, 0, 0.7);    
+}
+#rewardRFPieViz {
+
+}
+
+#rewardRFPieViz svg{
+
+  margin: 0 auto;
+  display: block;
+}
+
+#timelineViz {
+  margin-top: 0px;
+}
+
+
+#banditsList{
+  height: 320px; 
+  width: 130px; 
+  overflow:auto;
+  overflow-x:hidden; 
+}
+
+
+#banditsList ul{
+  padding-left: 0px;
+}
+
+#banditsList li{
+  padding: .1em 0;
+  border-radius: 3px;
+  background-color:#CF5178;
+  margin:  0.1em 0;
+  text-align: center;
+  color:black;
+}
+
+
+#qValContainer {
+  font-weight: bold;
+}
+
+#codeViz div{
+  border-radius: 5px;
+  background-color: rgba(25, 25, 0, 1.0);
+  color: white;
+  padding: 4px;
+  margin: 2px;
+}
+#viz4 > div{
+  border: 2px solid white;
+  border-radius: 10px;
+  padding:10px;
+}
+
+#viz2 > div{
+  border: 2px solid white;
+  border-radius: 10px;
+  padding:10px;
+  margin: 10px;
+}
+#viz1 > div{
+  border: 2px solid white;
+  border-radius: 10px;
+  padding:10px;
+  margin: 10px;
+}
+
+text{
+  stroke:white;
+}
+#master{
+  border: 5px solid white;
+  border-radius: 20px;
+  width: max-content;
+  margin: 60px auto auto auto;
+  padding: 20px 0px;
+}
+
+.vizTitle{
+  font-weight: bold;
+  margin-top: 40px;
+}
+
+
+#machineSvg{
+  width:300px;
+  height:300px;
+  position:absolute;
+  z-index: 1;
+  margin-top: -50px;
+}
+
+#slotMachine_body{
+  fill:rgb(180, 75, 119);
+
+}
+
+#slotMachine_lever{
+  fill: white;
+
+}
+
+#viz1{
+  margin-top: 0px;
+  padding: 0px 20px;
+}
+
+#viz2{
+  margin-top: 0px;
+  padding: 0px 20px;
+}
+
+#viz4{
+  margin-top: 0px;
+  padding: 0px 20px;
+}
+
+
+/* for all the charts*/
+
+.domain{
+  stroke: white;
+
+}
+
+/*text of all the chart gen with d3*/
+.tick text{
+  font-size: 15px;
+  stroke: white;
+  stroke-width: 0px;
+  fill: white;
+  
+}
+
+#rewardText{
+  transform: translate(100px,110px);
+font-weight: bold;
+font-size: 20px;
+}
+
+#vizMid{
+  width: 50px;
+  margin-left: -30px;
+  margin-right: -30px;
+}

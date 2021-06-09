@@ -7,7 +7,7 @@ categories: Reinforcement Learning
 permalink: /:categories/:title.html
 mathjax: true
 author: Mrityunjay
-height: 500px
+height: 550px
 img: /posts_imgs/monteCarlo/teaser/monteCarloScrst.png
 viz: monteCarlo/index.html
 ---

@@ -18,6 +18,9 @@
 
   /*multi-arm bandit's bg color*/
   --main-bg-color: #191928; 
+
+  --secondary-bg-color:#141420; 
+  --tertiary-bg-color: #12121d; 
   
   /* --main-bg-color: linear-gradient(#323B5C, #2F2E54); */
   

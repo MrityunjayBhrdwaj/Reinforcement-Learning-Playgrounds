@@ -387,8 +387,8 @@ function mcVizCallback(ep, fv){
         // resetting
         document.querySelector('#hitAction').style.backgroundColor = '';
         document.querySelector('#standAction').style.backgroundColor = '';
-        document.querySelector('#hitAction').style.color = 'black';
-        document.querySelector('#standAction').style.color = 'black';
+        document.querySelector('#hitAction').style.color = '';
+        document.querySelector('#standAction').style.color = '';
 
         // reintializing
         document.querySelector('#gameStatus').style.opacity = 0.0;
