@@ -12,8 +12,15 @@ img: /posts_imgs/monteCarlo/teaser/monteCarloScrst.png
 viz: monteCarlo/index.html
 ---
 
+## Um... What am i looking at?
 
-* Unlike DPs, Monte Carlo Methods rely solely on the sample sequences of states, actions, and reward obtained from the environment to calculate their value estimates by simply averaging the sample returns for each state-action pair.
+This is a Demostration of Using Monte Carlo Method in Classical [BlackJack](https://en.wikipedia.org/wiki/Blackjack) environment as defined in Sutton and Buttao.
+
+Here, At each time step we are also logging all the events at each round of blackjack. We can play with controls to understand whats going on at each time step.
+
+## What is Monte Carlo Method?
+
+> Unlike DPs, Monte Carlo Methods rely solely on the sample sequences of states, actions, and reward obtained from the environment to calculate their value estimates by simply averaging the sample returns for each state-action pair.
 * MC Methods computes/update there value estimates and policies after the end of each episode.
 
 
