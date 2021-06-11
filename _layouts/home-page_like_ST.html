@@ -1,0 +1,80 @@
+---
+layout: default
+---
+<div class="flex-container">
+  {% include header.html %}
+  <link rel="stylesheet" href="{{ site.url }}/assets/css/home.css">
+    <link rel="stylesheet" type="text/css" href="{{site.url }} /assets/css/jquery.fullpage.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{site.url}}assets/js/jquery.fullpage.js"></script>
+
+  <div class="content wrapper">
+    {{ content }}
+  {% include search.html %}
+
+    <div class="content" id="fullpage">
+        <div class="section " id="section0 ">
+            <div class="section-wrapper">
+                <div class="intro">
+                    <h1>Reinforcement Learning Playgrounds</h1>
+                    <p >A Platform for Playing and Learning RL Algorithms</p>
+                  
+                    <!-- <a href="./basic-probability/index.html"> -->
+                    <a href="#">
+                        <div class='rec_button'>Start</div>
+                    </a>
+
+
+                </div>
+                <a href="#secondPage" data-menuanchor="secondPage"><div class="scroll-down"> <img src="img/button/bottom-arrow.svg"></div></a>
+            </div>
+        </div>
+
+        <div class="section" id="section1">
+          {% include pagination.html %}
+        </div>
+
+        <div class="section" id="section2">
+            <div class="section-wrapper">
+                <div class="about">
+                    <div class="team">
+                        <a href="https://mrityunjay.ml/">
+                        	<img src="img/team/mrityunjay.png">
+                            <p>Mrityunjay Bhardwaj</p>
+                        </a>
+                    </div>
+                    <div>
+                    <P>
+                        Reinforcement Learning Playground was created by Mrityunjay Bhardwaj while going through RL Books and Literature. The goal of this website is to make reinforcement learning a bit more accessible through interactive visualizations (designed using Mike Bostock’s JavaScript library <a href="https://d3js.org/" style="color:#64bdff; text-decoration: underline;">D3.js</a>).
+                        </br>
+
+                        <h3 style="color: white;">Acknowledgement</h3>
+                        <p>
+
+                        This website is built using <a id="link" href="https://seeing-theory.brown.edu/">Seeing theory</a> and Artem Sheludko's <a id="link" href="https://github.com/artemsheludko/adam-blog">Jekyll theme</a> as its base
+                        and its Heavily Inspired by amazing works like <a id="link" href="https://seeing-theory.brown.edu/">Seeing theory</a>,<a id="link" href="https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.62739&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false">Neural Networks Playgrounds</a>, <a id="link" href="https://cs.stanford.edu/people/karpathy/reinforcejs/">Andrej Karpathy's reinforcejs demos</a>  and <a id="link" href="https://distill.pub/">Distill Pub</a>
+                        </br>
+                        </br>
+
+                        Lastly, the Main source of Information is Sutton and Butao's <a id="link" href="http://incompleteideas.net/book/the-book-2nd.html"></a>Book and Deepmind's <a href="https://deepmind.com/learning-resources/-introduction-reinforcement-learning-david-silver" id="link">Course on Reinforcement Learning</a>.
+                        
+                        </br>
+                        </p>
+                    </P>
+
+                    </div>
+                
+                    </br>
+                    <!-- <p>The Team</p> -->
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{site.url}}/assets/js/home.js"></script>
+  </div> <!-- End Wrapper -->
+  {% include footer.html %}
+</div>
+<!-- Home JavaScript -->
