@@ -32,7 +32,8 @@
 
 <body>
   <div class="flex-container">
-  <header class="main-header">
+  
+<header class="main-header">
   <div class="wrapper">
     <div class="header-flex">
       <div class="menu-icon-container">
@@ -41,11 +42,6 @@
       <nav class="main-nav">
         <span class="menu-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
         <ul>
-
-          <!-- TODO: BRAINSTORM: decide where to put these blog and about page link... i am thinking of in the footer but i also need to put some link on the header (or do i??) -->
-          <!-- <li><a href="/">Blog</a></li>
-          <li><a href="/about">About</a></li> -->
-
         
           
             <li><a href="/reinforcement/learning/Bandits.html" class="recent-item" ><span>K-Arm Bandits</span></a></li>
@@ -62,7 +58,7 @@
 
         </ul>
       </nav>
-      <p class="logo"><a href="/">Reinforcement Learning Playgrounds</a></p>
+      <p class="logo"><a href="/">Reinforcement Learning Playground</a></p>
       <div class="search-icon-container">
         <span class="search-icon"><a><i class="fa fa-search" aria-hidden="true"></i></a></span>
       </div>
@@ -75,14 +71,55 @@
 
 </header> <!-- End Header -->
 
-  <div class="content wrapper">
-    <div class="small-wrapper">
+  <div class="search-box">
+  <div class="wrapper">
+    <div class="search-grid">
+      <form class="search-form">
+        <div id="search-container">
+          <input type="text" id="search-input" class="search" placeholder="Search">
+        </div>
+      </form>
+      <ul id="results-container" class="results-search"></ul>
+      <div class="icon-close-container">
+        <span class="search-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="container">
+    <section>
+      
+<link rel="stylesheet" href="/assets/css/main-section.css">
+<div class="main-section">
+	<div id="foreground">
+		<h1>Reinforcement Learning Playgrounds</h1>
+		<h3>A Platform for <b>Playing, Exploring</b> and <b>Understanding </b> <br> Reinforcement Learning Algorithms</h3>
+
+		<!-- <p>I Love Learning New Things!</p> -->
+		<!-- <h1>V</h1> -->
+		<br>
+		<br>
+		<a class="link-btn" href="#posts">
+			scroll
+		</a>
+	</div>
+	<div id="background">
+	</div>
+</div>
+<script src="/assets/js/d3.min.js"></script>
+<script src="/assets/js/home.js"></script>
+    </section>
+    <section id="posts">
+      <div class="content wrapper">
+        <div class="small-wrapper">
   <div class="about-container">
     <section class="about-header">
       <div class="author-image-container">
-        <img src="/assets/img/myPic.png" alt="Reinforcement Learning Playgrounds">
+        <img src="/assets/img/mrityunjay.png" alt="Reinforcement Learning Playground">
       </div>
-      <p class="subtitle">I love learning New things.</p>
+      <p class="subtitle">Reinforcement Learning Playground was created by <a href="https://mrityunjay.ml/">Mrityunjay Bhardwaj</a> while going through RL Books and Literature. The goal of this website is to make reinforcement learning a bit more accessible through interactive visualizations (designed using Mike Bostock’s JavaScript library <a href="https://d3js.org/">D3.js</a>).</p>
     </section>
     <section class="about-body">
       <ul class="contact-list">
@@ -126,34 +163,48 @@
   </div> <!-- End About Container -->
 </div> <!-- End Small Wrapper -->
 
-  <div class="search-box">
-  <div class="wrapper">
-    <div class="search-grid">
-      <form class="search-form">
-        <div id="search-container">
-          <input type="text" id="search-input" class="search" placeholder="Search">
-        </div>
-      </form>
-      <ul id="results-container" class="results-search"></ul>
-      <div class="icon-close-container">
-        <span class="search-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
-      </div>
-    </div>
-  </div>
-</div>
-
-  <div class="pagination clearfix">
+        <div class="pagination clearfix">
   
   
 </div>
 
-  </div> <!-- End Wrapper -->
-  <footer class="main-footer">
-  <div class="copyright">
-    <p>2021 &copy; <a href="http://localhost:4000"> Reinforcement Learning Playgrounds </a></p>
-  </div>
-</footer> <!-- End Footer -->
+      </div> <!-- End Wrapper -->
+    </section>
+    <section>
+      <div class="content wrapper">
+        <div class="author-box">
+  <img src="/assets/img/mrityunjay.png" alt="Reinforcement Learning Playground" class="author-img">
+  <div class="author-desc">
+    <!-- <h2>Reinforcement Learning Playground</h2> -->
+    <h2>About 👋</h2>
+    <p>Reinforcement Learning Playground was created by <a href="https://mrityunjay.ml/">Mrityunjay Bhardwaj</a> while going through RL Books and Literature. The goal of this website is to make reinforcement learning a bit more accessible through interactive visualizations (designed using Mike Bostock’s JavaScript library <a href="https://d3js.org/">D3.js</a>).</p>
 
+    <h2>Acknowledgements 🙏</h2>
+    <p>
+      This website is built using this <a href="https://github.com/artemsheludko/adam-blog">jekyll theme</a> and is
+      heavily Inspired by websites like <a href="seeing-theory.brown.edu/">Seeing Theory</a>, <a href="https://distill.pub/">distill.pub</a>, <a href="https://setosa.io/#/">satosa</a> and many more.
+
+    </p>
+    <ul>
+      
+        <li class="email"><a href="mailto:example.adam@blog.com"><i class="fa fa-envelope-o" aria-hidden="true"></i></a></li>
+      
+      
+        <li class="phone"><a href="tel:044 825 5523"><i class="fa fa-phone" aria-hidden="true"></i></a></li>
+      
+      
+        <li class="website"><a href="https://artemsheludko.github.io" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i></a></li>
+      
+      
+        <li class="twitter"><a href="https://twitter.com/@mrityunjay_99" target="_blank"><i class="fa fa-twitter"></i></a></li>
+      
+    </ul>
+  </div>
+</div>
+
+      </div> 
+    </section>
+  </div>
 </div>
 
   <!-- JS -->

@@ -32,7 +32,8 @@
 
 <body>
   <div class="flex-container">
-  <header class="main-header">
+  
+<header class="main-header">
   <div class="wrapper">
     <div class="header-flex">
       <div class="menu-icon-container">
@@ -41,11 +42,6 @@
       <nav class="main-nav">
         <span class="menu-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
         <ul>
-
-          <!-- TODO: BRAINSTORM: decide where to put these blog and about page link... i am thinking of in the footer but i also need to put some link on the header (or do i??) -->
-          <!-- <li><a href="/">Blog</a></li>
-          <li><a href="/about">About</a></li> -->
-
         
           
             <li><a href="/reinforcement/learning/Bandits.html" class="recent-item" ><span>K-Arm Bandits</span></a></li>
@@ -62,7 +58,7 @@
 
         </ul>
       </nav>
-      <p class="logo"><a href="/">Reinforcement Learning Playgrounds</a></p>
+      <p class="logo"><a href="/">Reinforcement Learning Playground</a></p>
       <div class="search-icon-container">
         <span class="search-icon"><a><i class="fa fa-search" aria-hidden="true"></i></a></span>
       </div>
@@ -132,10 +128,20 @@
 
           <!-- <div class="page-date"><time datetime="2020-07-14 00:00:00 +0530">2020, Jul 14</time></div> -->
         </div>
-        <ul>
-  <li>Unlike DPs, Monte Carlo Methods rely solely on the sample sequences of states, actions, and reward obtained from the environment to calculate their value estimates by simply averaging the sample returns for each state-action pair.</li>
-  <li>MC Methods computes/update there value estimates and policies after the end of each episode.</li>
-</ul>
+        <h2 id="um-what-am-i-looking-at">Um… What am i looking at?</h2>
+
+<p>This is a Demostration of Using Monte Carlo Method in Classical <a href="https://en.wikipedia.org/wiki/Blackjack">BlackJack</a> environment as defined in Sutton and Buttao.</p>
+
+<p>Here, At each time step we are also logging all the events at each round of blackjack. We can play with controls to understand whats going on at each time step.</p>
+
+<h2 id="what-is-monte-carlo-method">What is Monte Carlo Method?</h2>
+
+<blockquote>
+  <p>Unlike DPs, Monte Carlo Methods rely solely on the sample sequences of states, actions, and reward obtained from the environment to calculate their value estimates by simply averaging the sample returns for each state-action pair.</p>
+  <ul>
+    <li>MC Methods computes/update there value estimates and policies after the end of each episode.</li>
+  </ul>
+</blockquote>
 
 <p>Advantage of using Monte Carlo Methods:</p>
 <ul>
@@ -380,7 +386,7 @@ where,
 
   <footer class="main-footer">
   <div class="copyright">
-    <p>2021 &copy; <a href="http://localhost:4000"> Reinforcement Learning Playgrounds </a></p>
+    <p>2021 &copy; <a href="http://localhost:4000"> Reinforcement Learning Playground </a></p>
   </div>
 </footer> <!-- End Footer -->
 

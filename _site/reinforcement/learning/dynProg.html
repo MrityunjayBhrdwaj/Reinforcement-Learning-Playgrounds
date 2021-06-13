@@ -32,7 +32,8 @@
 
 <body>
   <div class="flex-container">
-  <header class="main-header">
+  
+<header class="main-header">
   <div class="wrapper">
     <div class="header-flex">
       <div class="menu-icon-container">
@@ -41,11 +42,6 @@
       <nav class="main-nav">
         <span class="menu-icon-close"><i class="fa fa-times" aria-hidden="true"></i></span>
         <ul>
-
-          <!-- TODO: BRAINSTORM: decide where to put these blog and about page link... i am thinking of in the footer but i also need to put some link on the header (or do i??) -->
-          <!-- <li><a href="/">Blog</a></li>
-          <li><a href="/about">About</a></li> -->
-
         
           
             <li><a href="/reinforcement/learning/Bandits.html" class="recent-item" ><span>K-Arm Bandits</span></a></li>
@@ -62,7 +58,7 @@
 
         </ul>
       </nav>
-      <p class="logo"><a href="/">Reinforcement Learning Playgrounds</a></p>
+      <p class="logo"><a href="/">Reinforcement Learning Playground</a></p>
       <div class="search-icon-container">
         <span class="search-icon"><a><i class="fa fa-search" aria-hidden="true"></i></a></span>
       </div>
@@ -134,6 +130,14 @@
         </div>
         <p><br /></p>
 
+<h2 id="um-what-am-i-looking-at">Um… what am i looking at?</h2>
+
+<p>This is a Demostration of Using Dynamic Programming Method in Grid World Environment.</p>
+
+<p>Here, each arrows indicates where we should move from each grid position. On the right, we have visualized the internal graph of this grid world which shows how are we moving in the grid world.</p>
+
+<h2 id="what-is-dynamic-programming">What is Dynamic Programming?</h2>
+
 <ul>
   <li>
     <p><strong>Dynamic programming</strong> (DP) is a collection of algorithms that can be used to compute optimal policies given a <em>perfect model of the environment</em> as Markov Decision Process (MDP).</p>
@@ -143,7 +147,7 @@
   </li>
 </ul>
 
-<h2 id="policy-evaluation-prediction">Policy Evaluation (Prediction)</h2>
+<h3 id="policy-evaluation-prediction">Policy Evaluation (Prediction)</h3>
 
 <ul>
   <li>The process of calculating the state-value function <script type="math/tex">v_\pi</script> for an arbitrary policy <script type="math/tex">\pi</script> is called <strong>policy evaluation</strong>.</li>
@@ -178,7 +182,7 @@
     <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/iterativePolicyEvalAlgo.png" width="800px" />
 </div>
 
-<h2 id="policy-improvement">Policy Improvement</h2>
+<h3 id="policy-improvement">Policy Improvement</h3>
 
 <ul>
   <li>
@@ -198,7 +202,7 @@
   </li>
 </ul>
 
-<h2 id="policy-iteration">Policy Iteration</h2>
+<h3 id="policy-iteration">Policy Iteration</h3>
 
 <ul>
   <li>
@@ -216,56 +220,10 @@
     <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/PolicyIterAlgo.png" width="800px" />
 </div>
 
-<h2 id="value-iteration">Value Iteration</h2>
-
+<h2 id="further-reading">Further Reading</h2>
 <ul>
-  <li>if we stop the policy evaluation loop after just one sweep and combine it with the policy improvement what we endup with, is the <strong>value iteration method</strong>. it can be written as a simple update operation that combines both the operations stated earlier:-</li>
-</ul>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}
-v_{k+1}(s) & \doteq \max _{a} \mathbb{E}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\right) | S_{t}=s, A_{t}=a\right] \\
-&=\max _{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r | s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right]
-\end{aligned} %]]></script>
-
-<div style="margin: 0 auto; text-align: center">
-    <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/ValueIterAlgo.png" width="800px" />
-</div>
-
-<h2 id="asynchronous-dynamic-programming">Asynchronous Dynamic Programming</h2>
-
-<ul>
-  <li>
-    <p>Async algorithms update the values of states <em>in any order whatsoever, using whatever values of other states happen to be available</em>.</p>
-
-    <ul>
-      <li>avoiding sweeps doesn’t mean less computation, it just means that now, because we are not bounded by any specific way of selecting a state to update we can now put more emphasis on those states which leads to the optimal solution and update them more frequently and put less emphasis on regions of the environment which are not that important</li>
-      <li>
-        <p>an extreme case of the above assertion is that we can run an iterative DP algorithm at the same time that an agent is “actually” experiencing the MDP.i.e, we can update those states which we are currently visiting.</p>
-      </li>
-      <li></li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="generalized-policy-iteration">Generalized Policy Iteration</h2>
-
-<ul>
-  <li>We use the term generalized policy iteration (GPI) to refer to the general idea of letting policy-evaluation and improvement process interact, independent of the granularity and other details of the 2 processes.</li>
-</ul>
-
-<div style="margin: 0 auto; text-align: center">
-    <span>
-        <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/coordinateAscent.png" width="300px" />
-    </span>
-    <span>
-        <img src="http://localhost:4000/assets/img/posts_imgs/dynProg/body/policyIterLoop.png" width="200px" />
-    </span>
-</div>
-
-<ul>
-  <li>now, if we keep running both the processes then in theory, they stabilize only when a policy has been found that is greedy with respect to its own evaluation function i.e, we can’t improve it further, this implies that the Bellman optimality equation holds and thus that policy and the value function are optimal.</li>
-  <li>We can also think of these 2 steps as optimizing for 2 different goals but if we combine both. then, the ultimate goal is to reach <script type="math/tex">v_*</script> and <script type="math/tex">\pi_*</script> that’s where these 2 processes converge eventually.–</li>
+  <li>Sutton and Butao (<a href="http://incompleteideas.net/book/the-book-2nd.html">link</a>)</li>
+  <li>Deepmind Course on Reinforcement Learning (<a href="https://www.youtube.com/watch?v=hMbxmRyDw5M">link</a>)</li>
 </ul>
 
         <div class="page-footer">
@@ -326,7 +284,7 @@ v_{k+1}(s) & \doteq \max _{a} \mathbb{E}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\
 
   <footer class="main-footer">
   <div class="copyright">
-    <p>2021 &copy; <a href="http://localhost:4000"> Reinforcement Learning Playgrounds </a></p>
+    <p>2021 &copy; <a href="http://localhost:4000"> Reinforcement Learning Playground </a></p>
   </div>
 </footer> <!-- End Footer -->
 

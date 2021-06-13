@@ -9,10 +9,10 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Author settings
-author: Reinforcement Learning Playgrounds
-author-pic: myPic.png
-about-author: I love learning New things.
-
+author: Reinforcement Learning Playground
+author-pic: mrityunjay.png
+about-author: Reinforcement Learning Playground was created by <a href="https://mrityunjay.ml/">Mrityunjay Bhardwaj</a> while going through RL Books and Literature. The goal of this website is to make reinforcement learning a bit more accessible through interactive visualizations (designed using Mike Bostock’s JavaScript library <a href="https://d3js.org/">D3.js</a>).
+          
 # Contact links
 email: # Add your Email address
 phone: # Add your Phone number
