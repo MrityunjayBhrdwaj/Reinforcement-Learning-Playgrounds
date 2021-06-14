@@ -1,16 +1,16 @@
 title: Learn Reinforcement Learning The fun way
 email: mrityunjaybhardwaj99@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  A platform for <b>Playing</b>, <b>Exploring</b> and <b>Understanding</b> <br>
+  several Reinforcement Learning Algorithms.
 permalink: ':title/'
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Author settings
-author: Reinforcement Learning Playground
+author: Reinforcement Learning Playgrounds
 author-pic: mrityunjay.png
+
 about-author: Reinforcement Learning Playground was created by <a href="https://mrityunjay.ml/">Mrityunjay Bhardwaj</a> while going through RL Books and Literature. The goal of this website is to make reinforcement learning a bit more accessible through interactive visualizations (designed using Mike Bostock’s JavaScript library <a href="https://d3js.org/">D3.js</a>).
           
 # Contact links
